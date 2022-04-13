@@ -1,5 +1,7 @@
-from genericpath import exists
+from typing import Optional
+from pydantic import BaseModel
 from fastapi import FastAPI
+import uvicorn
 
 app = FastAPI()
 
@@ -25,4 +27,18 @@ def show(id:int): # id should be integer by default it string
 def unpublished():
     return {'data':'all unpublished data'}
 
+
+
+#pydantic use
+class Blog_class(BaseModel):
+    title: str 
+    body: str
+    published: Optional[bool]
+
+
+# use post method
+@app.post('/blog')
+def create_blog(blog:Blog_class):
+    # return request
+    return {'data':f'blog title is {blog.title}'}
 
